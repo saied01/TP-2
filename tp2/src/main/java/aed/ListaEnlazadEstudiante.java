@@ -12,14 +12,13 @@ public class ListaEnlazadEstudiante {
         Inserta al estudiante dentro de la lista enlazada de una materia
         Ademas le suma a su "materiasCursando" +1
          */
+        NodoEstudiante nuevoEstudiante = new NodoEstudiante(estudiante);
+
         if (raiz == null) {
-            raiz = new NodoEstudiante(estudiante);
+            raiz = nuevoEstudiante;
         } else {
-            NodoEstudiante actual = raiz;
-            while (actual.siguiente != null) {
-                actual = actual.siguiente;
-            }
-            actual.siguiente = new NodoEstudiante(estudiante);
+            nuevoEstudiante.siguiente = raiz;
+            raiz = nuevoEstudiante;
         }
     estudiante.materiasCursando += 1;
     }
