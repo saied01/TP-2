@@ -7,6 +7,8 @@ public class SistemaSIU {
     NodoCarrera raiz;
     InfoMateria[] infoMaterias;
     ArrayList<Estudiante> estudiantes;
+    int materiasConAlMenosUnEst;
+
 
     ArrayList<Materia> materias;
 
@@ -86,6 +88,10 @@ public class SistemaSIU {
         instanciaDeMateria.estudiantes.insertarEstudiante(estudianteObtenido);
         /*TENGO LA DUDA SI INSERTAR ESTUDIANTE EXCEDE LA COMPLEJIDAD
         Que otra forma de encontrar al estudiante hay que no implica mas de O(1)?*/
+
+        if (instanciaDeMateria.inscriptos == 1) {
+            materiasConAlMenosUnEst++; //es O(1) porque checkear el largo de la lista es constante asi que no cambia la complejidad de la funcion.
+        }
     }
 
     public Estudiante ObtenerEstudianteOCrearlo(String estudiante){
@@ -108,6 +114,7 @@ public class SistemaSIU {
 
     }
 
+    //O(|c| + |m|)
     public int[] plantelDocente(String materia, String carrera){
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
@@ -144,8 +151,8 @@ public class SistemaSIU {
     public String[] materias(String carrera){
         throw new UnsupportedOperationException("Método no implementado aún");
     }
-
+    //O(1)
     public int materiasInscriptas(String estudiante){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        return materiasConAlMenosUnEst;
     }
 }
