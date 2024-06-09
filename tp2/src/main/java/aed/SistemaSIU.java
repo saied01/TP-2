@@ -128,8 +128,13 @@ public class SistemaSIU {
         return instanciaDeMateria.inscriptos;
     }
 
+    //O(|c| + |m|)
     public boolean excedeCupo(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");
+
+        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
+        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
+        Materia instanciaDeMateria = tailMateria.materia; // O(1)
+        return instanciaDeMateria.cupo < instanciaDeMateria.inscriptos;
     }
 
     public String[] carreras(){

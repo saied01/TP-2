@@ -7,6 +7,7 @@ public class Materia {
 
     ArrayList<String[]> carrerasALasQuePertenece;
     int[] cargosdocentes;
+    int[] cupoPorCargo;
     int cupo;
     int inscriptos;
 
@@ -16,6 +17,7 @@ public class Materia {
     public Materia() {
         this.carrerasALasQuePertenece = new ArrayList<>();
         this.cargosdocentes = new int[]{0,0,0,0};//AY2[3],AY1[2],JTP[1],PROF[0]
+        this.cupoPorCargo = new int[]{250, 100, 20,30};
         this.cupo = 0;
         this.inscriptos = 0;
         this.estudiantes = new ListaEnlazadEstudiante();
@@ -33,5 +35,16 @@ public class Materia {
             case "PROF" -> cargosdocentes[0] += 1;
             default -> throw new UnsupportedOperationException("NO PUEDE PASAR ESTO");
         }
+        actualizarCupo(); // O(4)
     }
+
+    public void actualizarCupo(){
+        int minimo = cargosdocentes[0];
+        for (int i = 1; i < cargosdocentes.length; i++){
+            if (minimo > cargosdocentes[i] * cupoPorCargo[i]){
+                minimo = cargosdocentes[i] * cupoPorCargo[i];
+            }
+        }
+    }
+
 }
