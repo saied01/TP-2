@@ -1,6 +1,4 @@
 package aed;
-
-
 import java.util.ArrayList;
 
 class Estudiante{
@@ -231,13 +229,11 @@ public class SistemaSIU {
 
         // Hay que ver si esta bien IMPLEMENTADO ESTO
         // creo una lista de instancia de estudiantes para despues
-        // agregarlos a cada materia
+        // agregarlos a cada materia que se usa por unica vez
         estudiantes = new ArrayList<>(libretasUniversitarias.length);
         for (int i = 0; i < libretasUniversitarias.length; i++){ // creo una lista con objetos de estudiantes
             estudiantes.add(new Estudiante(libretasUniversitarias[i]));
         }
-
-
 
 
         // es donde se crean los tries de carreras y materias
@@ -252,9 +248,6 @@ public class SistemaSIU {
                 estudiantes.get(e).materiasCursando += 1;
             }
         }
-
-        NodoCarrera x = raiz;
-        
     }
 
     private Materia insertararCarrera(InfoMateria infoM) {
