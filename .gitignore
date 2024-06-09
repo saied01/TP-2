@@ -5,3 +5,5 @@
 *.iml
 /.idea
 /tp2/target/test-classes
+/tp2/target/test-classes
+tp2/target/test-classes/aed/SistemaSIUTests.class
