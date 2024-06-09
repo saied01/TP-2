@@ -10,7 +10,7 @@ public class SistemaSIU {
 
     ArrayList<Materia> materias;
 
-    enum CargoDocente{
+    public enum CargoDocente{
         AY2,
         AY1,
         JTP,
@@ -97,12 +97,23 @@ public class SistemaSIU {
         return new Estudiante(estudiante);
     }
 
+    //O(|c| + |m|)
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
+        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
+        Materia instanciaDeMateria = tailMateria.materia; // O(1)
+
+        instanciaDeMateria.agregarCargoDocente(cargo.toString()); // O(4)
+
+
     }
 
     public int[] plantelDocente(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
+        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
+        Materia instanciaDeMateria = tailMateria.materia; // O(1)
+
+        return  instanciaDeMateria.cargosdocentes; // O(1)
     }
 
     public void cerrarMateria(String materia, String carrera){
