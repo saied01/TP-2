@@ -16,7 +16,7 @@ public class TrieCarreras {
 
         for (int i = 0; i < n; i++) {
 
-            int index = word.charAt(i);//  - 'a'; <- esto se bugee, resolver despues
+            int index = word.charAt(i);//  - 'a'; <- esto se bugea, resolver despues
 
             if (head.hijo[index] == null) {
                 head.hijo[index] = new NodoCarrera();

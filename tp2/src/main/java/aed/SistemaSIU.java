@@ -80,9 +80,9 @@ public class SistemaSIU {
         Estudiante estudianteObtenido = ObtenerEstudianteOCrearlo(estudiante); // O(E) !!!
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
-        Materia instanciaDeMateria = tailMateria.materia;
+        Materia instanciaDeMateria = tailMateria.materia; // O(1)
 
-        instanciaDeMateria.cupo += 1;
+        instanciaDeMateria.inscriptos += 1;
         instanciaDeMateria.estudiantes.insertarEstudiante(estudianteObtenido);
         /*TENGO LA DUDA SI INSERTAR ESTUDIANTE EXCEDE LA COMPLEJIDAD
         Que otra forma de encontrar al estudiante hay que no implica mas de O(1)?*/
@@ -109,8 +109,12 @@ public class SistemaSIU {
         throw new UnsupportedOperationException("Método no implementado aún");
     }
 
+    //O(|c| + |m|)
     public int inscriptos(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
+        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
+        Materia instanciaDeMateria = tailMateria.materia; // O(1)
+        return instanciaDeMateria.inscriptos;
     }
 
     public boolean excedeCupo(String materia, String carrera){
