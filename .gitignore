@@ -4,3 +4,4 @@
 *.xml
 *.iml
 /.idea
+/tp2/target/test-classes

@@ -29,8 +29,8 @@ public class SistemaSIUTests {
     @Test
     void nuevo_sistema() {
         SistemaSIU sistema = new SistemaSIU(infoMaterias, estudiantes);
-        TrieCarreras x = sistema.trieCarreras;
-        ArrayList<Materia> y = sistema.materias;
+        TrieCarreras x = sistema.trieCarreras;//
+        ArrayList<Materia> y = sistema.materias;//
     }
 
     void realizar_inscripciones(SistemaSIU sistema){
@@ -62,6 +62,8 @@ public class SistemaSIUTests {
     void inscribir_estudiantes(){
         SistemaSIU sistema = new SistemaSIU(infoMaterias, estudiantes);
         realizar_inscripciones(sistema);
+
+        ArrayList<Estudiante> x = sistema.estudiantes;//
     }
 
     @Test

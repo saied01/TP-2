@@ -1,206 +1,7 @@
 package aed;
 import java.util.ArrayList;
 
-class Estudiante{
-    String LU;
-    int materiasCursando;
-    String carreraALaQuePertence;
 
-    public Estudiante(String LU){
-        this.LU = LU;
-        this.materiasCursando = 0;
-        this.carreraALaQuePertence = null;
-    }
-}
-
-class Materia {
-
-
-    ArrayList<String[]> carrerasALasQuePertenece; // Single list of strings for carreras
-    ArrayList<String> docentes; // List of Docente objects
-    int[] numeroDocentes; // Array of integers for number of docentes per carrera
-    int cupo; // Maximum capacity of the materia
-
-    ListaEnlazadEstudiante estudiantes;
-
-
-    Materia() {
-        this.carrerasALasQuePertenece = new ArrayList<>();
-        this.docentes = new ArrayList<>();
-        this.numeroDocentes = new int[0]; // Initialize empty int array
-        this.cupo = 0;
-        this.estudiantes = new ListaEnlazadEstudiante();
-    }
-
-
-
-
-}
-
-class NodoEstudiante{
-    NodoEstudiante siguiente;
-    Estudiante estudiante;
-
-    public NodoEstudiante(Estudiante estudiante){
-        this.siguiente = null;
-        this.estudiante = estudiante;
-    }
-}
-
-class NodoMateria {
-    /*
-    nodo con modificacion del 'tail' con instancia de clase Materia
-     */
-    boolean esFinalPalabra;
-    NodoMateria[] hijo;
-    Materia materia;
-
-    String letra;
-
-    public NodoMateria() {
-        this.letra = null;
-        this.hijo = new NodoMateria[1000];
-        this.esFinalPalabra = false;
-        this.materia = null;
-
-    }
-}
-
-class NodoCarrera {
-    /*
-    nodo con modificacion del 'tail' con instancia de trie de Materias de carrera
-     */
-    boolean esFinalPalabra;
-    NodoCarrera[] hijo;
-    TrieMaterias trieMaterias;
-    String letra;
-    public NodoCarrera() {
-        this.letra = null;
-        this.hijo = new NodoCarrera[1000];
-        this.esFinalPalabra = false;
-        this.trieMaterias = null;
-    }
-}
-
-class ListaEnlazadEstudiante{
-    NodoEstudiante raiz;
-
-    public ListaEnlazadEstudiante(){
-        this.raiz = null;
-    }
-
-    public void insertarEstudiante(Estudiante estudiante){
-        if (raiz == null){
-            raiz = new NodoEstudiante(estudiante);
-        }
-        else {
-            NodoEstudiante actual = raiz;
-            while (actual.siguiente != null) {
-                actual = actual.siguiente;
-            }
-            actual.siguiente = new NodoEstudiante(estudiante);
-        }
-    }
-
-
-
-}
-
-class TrieMaterias {
-
-    NodoMateria raiz;
-
-    public TrieMaterias() {
-        raiz = new NodoMateria();
-    }
-
-    public NodoMateria insertarEnTrie(String word) {
-        int n = word.length();
-
-        NodoMateria head = raiz;
-
-        for (int i = 0 ; i < n ; i++) {
-
-            int index = word.charAt(i) ;// - 'a'; <- esto se bugea, resolver despues
-
-            if (head.hijo[index] == null) {
-                head.hijo[index] = new NodoMateria();
-            }
-
-            head = head.hijo[index];
-            head.letra = String.valueOf(word.charAt(i));
-        }
-
-        head.esFinalPalabra = true;
-        return head;
-    }
-
-    public boolean buscar(String word) {
-
-        int n = word.length();
-
-        NodoMateria head = raiz;
-        for (int i = 0 ; i < n ; i++) {
-            int index = word.charAt(i) ;// - 'a'; <- esto se bugea, resolver despues
-
-            if (head.hijo[index] == null) return false;
-            head = head.hijo[index];
-        }
-
-        return head.esFinalPalabra;
-    }
-
-}
-
-class TrieCarreras {
-
-    NodoCarrera raiz;
-
-    public TrieCarreras() {
-        raiz = new NodoCarrera();
-    }
-
-    public TrieMaterias insertarEnTrie(String word) {
-        int n = word.length();
-
-        NodoCarrera head = raiz;
-        
-
-        for (int i = 0 ; i < n ; i++) {
-
-            int index = word.charAt(i) ;//  - 'a'; <- esto se bugee, resolver despues
-
-            if (head.hijo[index] == null) {
-                head.hijo[index] = new NodoCarrera();
-            }
-
-            head = head.hijo[index];
-            head.letra = String.valueOf(word.charAt(i));
-        }
-
-        head.esFinalPalabra = true;
-        if (head.trieMaterias == null){
-            head.trieMaterias = new TrieMaterias();
-        }
-        return head.trieMaterias;
-    }
-
-    public TrieMaterias buscar(String word) {
-
-        int n = word.length();
-
-        NodoCarrera head = raiz;
-        for (int i = 0 ; i < n ; i++) {
-            int index = word.charAt(i) ;// - 'a'; <- esto se bugea, resolver despues
-
-            if (head.hijo[index] == null) return null;
-            head = head.hijo[index];
-        }
-
-        return head.trieMaterias;
-    }
-
-}
 public class SistemaSIU {
     TrieCarreras trieCarreras;
     NodoCarrera raiz;
@@ -216,7 +17,7 @@ public class SistemaSIU {
         PROF
     }
 
-
+    //O( sumaDe{c∈C}(|c| ∗ |Mc|)+ sumaDe{m∈M}(sumaDe{n∈Nm}(|n|)) + E )
     public SistemaSIU(InfoMateria[] materiasEnCarreras, String[] libretasUniversitarias){
         /*
         materiasEnCarreras\ (listaDeCarreras...) (nombreDeMismaMateria)
@@ -226,27 +27,17 @@ public class SistemaSIU {
         this.raiz = trieCarreras.raiz;
         this.infoMaterias = materiasEnCarreras;
         this.materias = new ArrayList<>(); // este Array se la tengo solo para debuggin
+        this.estudiantes = new ArrayList<>(libretasUniversitarias.length); 
 
-        // Hay que ver si esta bien IMPLEMENTADO ESTO
-        // creo una lista de instancia de estudiantes para despues
-        // agregarlos a cada materia que se usa por unica vez
-        estudiantes = new ArrayList<>(libretasUniversitarias.length);
-        for (int i = 0; i < libretasUniversitarias.length; i++){ // creo una lista con objetos de estudiantes
+        for (int i = 0; i < libretasUniversitarias.length; i++){ // O(E)
             estudiantes.add(new Estudiante(libretasUniversitarias[i]));
         }
 
 
         // es donde se crean los tries de carreras y materias
-        for (int i = 0; i < materiasEnCarreras.length; i++) {
+        for (int i = 0; i < materiasEnCarreras.length; i++) { // O(sumaDe{c∈C}(|c| ∗ |Mc|)+ sumaDe{m∈M}(sumaDe{n∈Nm}(|n|))
             Materia materia = insertararCarrera(infoMaterias[i]);
-            materia.cupo = estudiantes.size();
             materias.add(materia);
-
-            //agrego a la lista de estudiante de cada materia
-            for (int e = 0; e < estudiantes.size(); e++) {
-                materia.estudiantes.insertarEstudiante(estudiantes.get(e));
-                estudiantes.get(e).materiasCursando += 1;
-            }
         }
     }
 
@@ -284,9 +75,26 @@ public class SistemaSIU {
         return instanceDeMateria;
     }
 
-
+    //O(|c| + |m|)
     public void inscribir(String estudiante, String carrera, String materia){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        Estudiante estudianteObtenido = ObtenerEstudianteOCrearlo(estudiante); // O(E) !!!
+        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
+        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
+        Materia instanciaDeMateria = tailMateria.materia;
+
+        instanciaDeMateria.cupo += 1;
+        instanciaDeMateria.estudiantes.insertarEstudiante(estudianteObtenido);
+        /*TENGO LA DUDA SI INSERTAR ESTUDIANTE EXCEDE LA COMPLEJIDAD
+        Que otra forma de encontrar al estudiante hay que no implica mas de O(1)?*/
+    }
+
+    public Estudiante ObtenerEstudianteOCrearlo(String estudiante){
+        for (int i = 0; i < estudiantes.size(); i++){
+            if (estudiantes.get(i).LU == estudiante){
+                return estudiantes.get(i);
+            }
+        }
+        return new Estudiante(estudiante);
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
