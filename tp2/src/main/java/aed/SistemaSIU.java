@@ -7,7 +7,6 @@ public class SistemaSIU {
     NodoCarrera raiz;
     InfoMateria[] infoMaterias;
     ArrayList<Estudiante> estudiantes;
-    int materiasConAlMenosUnEst;
 
 
     ArrayList<Materia> materias;
@@ -88,10 +87,6 @@ public class SistemaSIU {
         instanciaDeMateria.estudiantes.insertarEstudiante(estudianteObtenido);
         /*TENGO LA DUDA SI INSERTAR ESTUDIANTE EXCEDE LA COMPLEJIDAD
         Que otra forma de encontrar al estudiante hay que no implica mas de O(1)?*/
-
-        if (instanciaDeMateria.inscriptos == 1) {
-            materiasConAlMenosUnEst++; //es O(1) porque checkear el largo de la lista es constante asi que no cambia la complejidad de la funcion.
-        }
     }
 
     public Estudiante ObtenerEstudianteOCrearlo(String estudiante){
@@ -124,7 +119,48 @@ public class SistemaSIU {
     }
 
     public void cerrarMateria(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
+        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia);// O(|m|)
+        Materia instanciaDeMateria = tailMateria.materia; // O(1)
+        eliminar(materia, tailMateria);
+    }
+
+    private boolean eliminar(String materia, NodoMateria nodo){
+        return eliminarRec(nodo, materia, 0);
+    }
+
+    private boolean eliminarRec(NodoMateria nodo, String materia, int pos){
+        if (nodo == null) {
+            return false;
+        }
+
+        // si llega al final de la palabra:
+        if (pos == 0) {
+            if (nodo.esFinalPalabra) {
+                nodo.esFinalPalabra = false;
+                // si el nodo ya no tiene hijos lo podemos eliminar
+                return tieneHijos(nodo);
+            }
+        } else {
+            int indice = materia.charAt(pos);
+            // eliminar recursivamente desde el de abajo
+            if (eliminarRec(nodo.hijo[indice], materia, pos - 1)) {
+                // si el nodo hijo se elimino, sacarlo
+                nodo.hijo[indice] = null;
+                // si el nodo actual no tiene hijos y no es final de otra palabra, eliminamos
+                return !nodo.esFinalPalabra && tieneHijos(nodo);
+            }
+        }
+        return false;
+    }
+
+    private boolean tieneHijos(NodoMateria nodo) {
+        for (int i = 0; i < 26; i++) {
+            if (nodo.hijo[i] != null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     //O(|c| + |m|)
@@ -151,8 +187,10 @@ public class SistemaSIU {
     public String[] materias(String carrera){
         throw new UnsupportedOperationException("Método no implementado aún");
     }
+
     //O(1)
     public int materiasInscriptas(String estudiante){
-        return materiasConAlMenosUnEst;
+        Estudiante est = ObtenerEstudianteOCrearlo(estudiante);
+        return est.materiasCursando;
     }
 }
