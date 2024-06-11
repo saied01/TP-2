@@ -7,8 +7,6 @@ public class SistemaSIU {
     NodoCarrera raiz;
     InfoMateria[] infoMaterias;
     ArrayList<Estudiante> estudiantes;
-
-
     ArrayList<Materia> materias;
 
     public enum CargoDocente{
@@ -27,7 +25,7 @@ public class SistemaSIU {
         this.trieCarreras = new TrieCarreras();
         this.raiz = trieCarreras.raiz;
         this.infoMaterias = materiasEnCarreras;
-        this.materias = new ArrayList<>(); // este Array se la tengo solo para debuggin
+        this.materias = new ArrayList<>();
         this.estudiantes = new ArrayList<>(libretasUniversitarias.length); 
 
         for (int i = 0; i < libretasUniversitarias.length; i++){ // O(E)
@@ -121,46 +119,28 @@ public class SistemaSIU {
     public void cerrarMateria(String materia, String carrera){
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia);// O(|m|)
+        TrieMaterias trie = tailCarrera.trieMaterias;
         Materia instanciaDeMateria = tailMateria.materia; // O(1)
-        eliminar(materia, tailMateria);
-    }
-
-    private boolean eliminar(String materia, NodoMateria nodo){
-        return eliminarRec(nodo, materia, 0);
-    }
-
-    private boolean eliminarRec(NodoMateria nodo, String materia, int pos){
-        if (nodo == null) {
-            return false;
+        for(NodoMateria tail: instanciaDeMateria.tailsDeSusCarreras){ // O(|m| * Cantidad de Nombres)
+            trie.borrarMateria(tail);
         }
 
-        // si llega al final de la palabra:
-        if (pos == 0) {
-            if (nodo.esFinalPalabra) {
-                nodo.esFinalPalabra = false;
-                // si el nodo ya no tiene hijos lo podemos eliminar
-                return tieneHijos(nodo);
-            }
-        } else {
-            int indice = materia.charAt(pos);
-            // eliminar recursivamente desde el de abajo
-            if (eliminarRec(nodo.hijo[indice], materia, pos - 1)) {
-                // si el nodo hijo se elimino, sacarlo
-                nodo.hijo[indice] = null;
-                // si el nodo actual no tiene hijos y no es final de otra palabra, eliminamos
-                return !nodo.esFinalPalabra && tieneHijos(nodo);
-            }
-        }
-        return false;
+        instanciaDeMateria.desincribirEstudiantes();
+        borrarMateriadeMateriasSIU(instanciaDeMateria);
+
+
     }
 
-    private boolean tieneHijos(NodoMateria nodo) {
-        for (int i = 0; i < 26; i++) {
-            if (nodo.hijo[i] != null) {
-                return false;
+    public void borrarMateriadeMateriasSIU(Materia materia){
+        int indiceAEliminarDeMaterias = -1;
+        int i = 0;
+        while (indiceAEliminarDeMaterias == -1){
+            if(materia.esIgual(materias.get(i))){
+                indiceAEliminarDeMaterias = i;
             }
+            i++;
         }
-        return true;
+        materias.remove(indiceAEliminarDeMaterias);
     }
 
     //O(|c| + |m|)
@@ -185,7 +165,11 @@ public class SistemaSIU {
     }
 
     public String[] materias(String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
+        TrieMaterias materiasDeCarrera = tailCarrera.trieMaterias;
+
+        return materiasDeCarrera.devolverTodasLasMaterias();
+
     }
 
     //O(1)

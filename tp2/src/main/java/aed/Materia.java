@@ -6,6 +6,7 @@ public class Materia {
 
 
     ArrayList<String[]> carrerasALasQuePertenece;
+    ArrayList<NodoMateria> tailsDeSusCarreras;
     int[] cargosdocentes;
     int[] cupoPorCargo;
     int cupo;
@@ -16,6 +17,7 @@ public class Materia {
 
     public Materia() {
         this.carrerasALasQuePertenece = new ArrayList<>();
+        this.tailsDeSusCarreras = new ArrayList<>();//Para cuando sea necesario borrar la Materia
         this.cargosdocentes = new int[]{0,0,0,0};//AY2[3],AY1[2],JTP[1],PROF[0]
         this.cupoPorCargo = new int[]{250, 100, 20,30};
         this.cupo = 0;
@@ -46,5 +48,26 @@ public class Materia {
             }
         }
     }
+
+    public void desincribirEstudiantes(){
+        NodoEstudiante actual = estudiantes.raiz;
+        while (actual != null){
+            actual.estudiante.materiasCursando -= 1;
+            actual = actual.siguiente;
+        }
+    }
+
+    public boolean esIgual(Materia comparacion){
+        if(comparacion.carrerasALasQuePertenece.size() == carrerasALasQuePertenece.size()){
+            for(int i = 0; i < carrerasALasQuePertenece.size(); i++){
+                if(carrerasALasQuePertenece.get(i) != comparacion.carrerasALasQuePertenece.get(i)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
 
 }
