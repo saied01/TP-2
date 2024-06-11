@@ -165,10 +165,12 @@ public class SistemaSIU {
     }
 
     public String[] materias(String carrera){
+        ArrayList<String> todasLasMaterias;
+        todasLasMaterias = new ArrayList<String>();
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         TrieMaterias materiasDeCarrera = tailCarrera.trieMaterias;
 
-        return materiasDeCarrera.devolverTodasLasMaterias();
+        return materiasDeCarrera.devolverTodasLasMaterias(materiasDeCarrera.raiz, "", todasLasMaterias);
 
     }
 

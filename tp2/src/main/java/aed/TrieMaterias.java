@@ -1,5 +1,7 @@
 package aed;
 
+import java.util.ArrayList;
+
 public class TrieMaterias {
 
     NodoMateria raiz;
@@ -59,14 +61,22 @@ public class TrieMaterias {
 
     }
 
-    public String[] devolverTodasLasMaterias(){
+    public String[] devolverTodasLasMaterias(NodoMateria nodo, String prefijo, ArrayList<String> resultado){
 
-        String[] todasLasMaterias;
-        todasLasMaterias = new String[]{};
-        /*
-        IMPLEMENTAR
-         */
-        return todasLasMaterias;
+        if (nodo == null) {
+            return resultado.toArray(new String[0]);
+        }
+
+        if (nodo.esFinalPalabra) {
+            resultado.add(prefijo.toString());
+        }
+
+        for (int i = 0; i < nodo.hijo.length; i++) {
+            if (nodo.hijo[i] != null) {
+                devolverTodasLasMaterias(nodo.hijo[i], prefijo + (char) (i), resultado);
+            }
+        }
+        return resultado.toArray(new String[0]);
     }
 
 }
