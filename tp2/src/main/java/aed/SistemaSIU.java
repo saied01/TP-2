@@ -60,10 +60,11 @@ public class SistemaSIU {
 
             if(instanceDeMateria == null){ // si no esta agrego el pointer a la nueva isntancia de Materia
                 instanceDeMateria = new Materia();
-                ultimoNodoMateria.materia = instanceDeMateria;
-            }else { //si ya esta lo hago apuntar asi ahi
-                ultimoNodoMateria.materia = instanceDeMateria;
+
             }
+            ultimoNodoMateria.materia = instanceDeMateria;
+
+            ultimoNodoMateria.materia.tailsDeSusCarreras.add(ultimoNodoMateria);
 
             String[] tuplaCarreraMateria = new String[] {carrera, materia};
 
@@ -120,28 +121,20 @@ public class SistemaSIU {
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia);// O(|m|)
         TrieMaterias trie = tailCarrera.trieMaterias;
+        TrieMaterias x = tailCarrera.trieMaterias;
+
         Materia instanciaDeMateria = tailMateria.materia; // O(1)
         for(NodoMateria tail: instanciaDeMateria.tailsDeSusCarreras){ // O(|m| * Cantidad de Nombres)
             trie.borrarMateria(tail);
         }
 
         instanciaDeMateria.desincribirEstudiantes();
-        borrarMateriadeMateriasSIU(instanciaDeMateria);
+
 
 
     }
 
-    public void borrarMateriadeMateriasSIU(Materia materia){
-        int indiceAEliminarDeMaterias = -1;
-        int i = 0;
-        while (indiceAEliminarDeMaterias == -1){
-            if(materia.esIgual(materias.get(i))){
-                indiceAEliminarDeMaterias = i;
-            }
-            i++;
-        }
-        materias.remove(indiceAEliminarDeMaterias);
-    }
+
 
     //O(|c| + |m|)
     public int inscriptos(String materia, String carrera){

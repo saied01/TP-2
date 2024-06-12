@@ -28,7 +28,6 @@ public class TrieMaterias {
             actual.hijo[index].padre = actual;
             actual = actual.hijo[index];
             actual.letra = String.valueOf(word.charAt(i));
-            cantidadDeMaterias++;
         }
 
         actual.esFinalPalabra = true;
@@ -51,13 +50,19 @@ public class TrieMaterias {
     }
 
     public void borrarMateria(NodoMateria tailMateria) {
+        /*
+        Ejemplo: Para la materia ALGO1, actual.letra es "O" y hijo.letra es "1"
+         */
+        String palabraEliminada = "";
         NodoMateria actual = tailMateria.padre;
         NodoMateria hijo = tailMateria;
-        while (actual.padre != null || actual.esFinalPalabra) {
+        while (actual.padre != null & actual.esFinalPalabra) {
+            palabraEliminada =  hijo.letra + palabraEliminada;
             hijo = actual;
             actual = actual.padre;
         }
-        actual.hijo[Integer.parseInt(hijo.letra)] = null;
+        actual.hijo[hijo.letra.charAt(0)] = null; //Ej llegas a actual = raiz e hijo.letra = "A"
+        // y pones que actual.hijo[indice] = null en lugar de hijo.
 
     }
 
