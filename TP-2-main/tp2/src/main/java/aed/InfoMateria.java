@@ -4,9 +4,13 @@ public class InfoMateria{
     String[] carreras;
     String[] nombresEnCarreras;
 
-    public InfoMateria(String[] carreras, String[] nombresEnCarreras){
-        this.carreras = carreras;
-        this.nombresEnCarreras = nombresEnCarreras;
+    public InfoMateria(ParCarreraMateria[] listaPares){
+        this.carreras = new String[listaPares.length];
+        this.nombresEnCarreras = new String[listaPares.length];
+        for(int i = 0; i<listaPares.length; i++) {
+            this.carreras[i] = listaPares[i].getCarrera();
+            this.nombresEnCarreras[i] = listaPares[i].getNombreMateria();
+        }
     }
 
     public int longitud() {
