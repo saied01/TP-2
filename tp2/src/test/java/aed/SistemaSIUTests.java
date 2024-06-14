@@ -218,7 +218,8 @@ public class SistemaSIUTests {
     void listado_carreras(){
         SistemaSIU sistema = new SistemaSIU(infoMaterias, estudiantes);
         String[] carreras = new String[] {"Biológicas", "Físicas", "Matemáticas", "Químicas", "Datos", "Computación"};
-        assertArrayEquals(carreras, sistema.carreras());
+        String[] respuesta = sistema.carreras();
+        assertArrayEquals(carreras, respuesta);
     }
 
     @Test

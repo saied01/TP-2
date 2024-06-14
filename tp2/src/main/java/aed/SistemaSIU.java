@@ -1,5 +1,6 @@
 package aed;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class SistemaSIU {
@@ -129,9 +130,6 @@ public class SistemaSIU {
         }
 
         instanciaDeMateria.desincribirEstudiantes();
-
-
-
     }
 
 
@@ -154,7 +152,10 @@ public class SistemaSIU {
     }
 
     public String[] carreras(){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        ArrayList<String> todasLasMaterias;
+        todasLasMaterias = new ArrayList<String>();
+        String[] res = trieCarreras.devolverTodasLasCarreras(raiz, "", todasLasMaterias);
+        return res;
     }
 
     public String[] materias(String carrera){
@@ -165,6 +166,14 @@ public class SistemaSIU {
 
         return materiasDeCarrera.devolverTodasLasMaterias(materiasDeCarrera.raiz, "", todasLasMaterias);
 
+    }
+
+
+    public String[] ordenerLex(String[] array){
+        String[] res = new String[0];
+
+
+        return res;
     }
 
     //O(1)

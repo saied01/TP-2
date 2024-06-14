@@ -1,5 +1,7 @@
 package aed;
 
+import java.util.ArrayList;
+
 public class TrieCarreras {
 
     NodoCarrera raiz;
@@ -48,4 +50,23 @@ public class TrieCarreras {
         return head;
     }
 
+    public String[] devolverTodasLasCarreras(NodoCarrera nodo, String prefijo, ArrayList<String> resultado){
+
+        if (nodo == null) {
+            return resultado.toArray(new String[0]);
+        }
+
+        if (nodo.esFinalPalabra) {
+            resultado.add(prefijo.toString());
+        }
+
+        for (int i = 0; i < nodo.hijo.length; i++) {
+            if (nodo.hijo[i] != null) {
+                devolverTodasLasCarreras(nodo.hijo[i], prefijo + (char) (i), resultado);
+            }
+        }
+        return resultado.toArray(new String[0]);
+    }
+
 }
+
