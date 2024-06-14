@@ -56,13 +56,15 @@ public class TrieMaterias {
         String palabraEliminada = "";
         NodoMateria actual = tailMateria.padre;
         NodoMateria hijo = tailMateria;
-        while (actual.padre != null & actual.esFinalPalabra) {
-            palabraEliminada =  hijo.letra + palabraEliminada;
-            hijo = actual;
-            actual = actual.padre;
+        if(hijo.hijo == null) {
+            while (actual.padre != null & actual.esFinalPalabra) {
+                palabraEliminada = hijo.letra + palabraEliminada;
+                hijo = actual;
+                actual = actual.padre;
+            }
+            actual.hijo[hijo.letra.charAt(0)] = null; //Ej llegas a actual = raiz e hijo.letra = "A"
+            // y pones que actual.hijo[indice] = null en lugar de hijo.
         }
-        actual.hijo[hijo.letra.charAt(0)] = null; //Ej llegas a actual = raiz e hijo.letra = "A"
-        // y pones que actual.hijo[indice] = null en lugar de hijo.
 
     }
 

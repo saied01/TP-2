@@ -41,12 +41,14 @@ public class Materia {
     }
 
     public void actualizarCupo(){
-        int minimo = cargosdocentes[0];
-        for (int i = 1; i < cargosdocentes.length; i++){
+        int minimo = cargosdocentes[0] * cupoPorCargo[0];
+
+        for (int i = 0; i < cargosdocentes.length; i++){
             if (minimo > cargosdocentes[i] * cupoPorCargo[i]){
                 minimo = cargosdocentes[i] * cupoPorCargo[i];
             }
         }
+        cupo = minimo;
     }
 
     public void desincribirEstudiantes(){

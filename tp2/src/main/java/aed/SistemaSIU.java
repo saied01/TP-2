@@ -41,7 +41,7 @@ public class SistemaSIU {
         }
     }
 
-    private Materia insertararCarrera(InfoMateria infoM) {
+    private Materia insertararCarrera(InfoMateria infoM) { //esta mal escrito
         /*
         Ejemplo de imput
         infoM = (["Computación", "Datos"], ["Algoritmos", "Algoritmos2"])
@@ -126,6 +126,8 @@ public class SistemaSIU {
 
         Materia instanciaDeMateria = tailMateria.materia; // O(1)
         for(NodoMateria tail: instanciaDeMateria.tailsDeSusCarreras){ // O(|m| * Cantidad de Nombres)
+            tail.esFinalPalabra = false;
+            tail.materia = null;
             trie.borrarMateria(tail);
         }
 
