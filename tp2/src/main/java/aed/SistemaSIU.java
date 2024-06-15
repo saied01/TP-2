@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public class SistemaSIU {
     TrieCarreras trieCarreras;
+    TrieEstudiantes trieEstudiantes;
     NodoCarrera raiz;
     InfoMateria[] infoMaterias;
     ArrayList<Estudiante> estudiantes;
@@ -24,6 +25,7 @@ public class SistemaSIU {
          */
 
         this.trieCarreras = new TrieCarreras();
+        this.trieEstudiantes = new TrieEstudiantes();
         this.raiz = trieCarreras.raiz;
         this.infoMaterias = materiasEnCarreras;
         this.materias = new ArrayList<>();
@@ -78,7 +80,7 @@ public class SistemaSIU {
 
     //O(|c| + |m|)
     public void inscribir(String estudiante, String carrera, String materia){
-        Estudiante estudianteObtenido = ObtenerEstudianteOCrearlo(estudiante); // O(E) !!!
+        Estudiante estudianteObtenido = ObtenerEstudianteOCrearlo(estudiante); // O(1)
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
         Materia instanciaDeMateria = tailMateria.materia; // O(1)
@@ -89,13 +91,14 @@ public class SistemaSIU {
         Que otra forma de encontrar al estudiante hay que no implica mas de O(1)?*/
     }
 
+    // O(1) (duda: como peor caso es O(10) si no me equivoco, sigue contando como acotado O(1)?
     public Estudiante ObtenerEstudianteOCrearlo(String estudiante){
-        for (int i = 0; i < estudiantes.size(); i++){
-            if (estudiantes.get(i).LU == estudiante){
-                return estudiantes.get(i);
-            }
+        NodoEstudianteTrie est = trieEstudiantes.buscarEstudiante(estudiante);
+        if (est == null) {
+            est = trieEstudiantes.insertarEstudiante(estudiante);
+            return est.estudiante;
         }
-        return new Estudiante(estudiante);
+        return est.estudiante;
     }
 
     //O(|c| + |m|)
@@ -117,6 +120,7 @@ public class SistemaSIU {
 
         return  instanciaDeMateria.cargosdocentes; // O(1)
     }
+
 
     public void cerrarMateria(String materia, String carrera){
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
