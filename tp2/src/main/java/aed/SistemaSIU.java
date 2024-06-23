@@ -3,6 +3,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
+/* Invariante de Representacion:
+- `trieCarreras` cumple con el invariante de representacion de `TrieCarreras`.
+- `trieMaterias` cumple con el invariante de representacion de `TrieMaterias`.
+- `raiz` es el nodo raiz de `TrieCarreras`.
+- `infoMaterias` cumple con el invariante de representacion de `InfoMateria`.
+- El largo de `estudiantes` es igual a la cantidad de libretas universitarias ingresadas.
+- Los valores de `estudiantes` (Estudiante) cumplen con el invariante de representacion de `Estudiante`.
+- El largo de `materias` es mayor o igual a 0.
+- Los valores de `materias` (Materia) cumplen con el invariante de representacion de `Materia`.
+* */
+
+
 public class SistemaSIU {
     TrieCarreras trieCarreras;
     TrieEstudiantes trieEstudiantes;
