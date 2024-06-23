@@ -10,6 +10,9 @@ public class TrieEstudiantes {
     }
 
     public NodoEstudianteTrie insertarEstudiante(String LU) {
+        /*
+        O(|LU|) == O (1), esto debido a que el largo de LU de estudiantes esta actotado
+         */
         int n = LU.length();
 
         NodoEstudianteTrie actual = raiz;
@@ -31,6 +34,9 @@ public class TrieEstudiantes {
     }
 
     public NodoEstudianteTrie buscarEstudiante(String LU) {
+        /*
+        O(|LU|) == O (1), esto debido a que el largo de LU de estudiantes esta actotado
+         */
         NodoEstudianteTrie actual = raiz;
         for (int i = 0; i < LU.length(); i++) {
             int indice = LU.charAt(i) - '/';

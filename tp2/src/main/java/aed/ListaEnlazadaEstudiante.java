@@ -1,9 +1,9 @@
 package aed;
 
-public class ListaEnlazadEstudiante {
+public class ListaEnlazadaEstudiante {
     NodoEstudiante raiz;
 
-    public ListaEnlazadEstudiante() {
+    public ListaEnlazadaEstudiante() {
         this.raiz = null;
     }
 
@@ -20,6 +20,6 @@ public class ListaEnlazadEstudiante {
             nuevoEstudiante.siguiente = raiz;
             raiz = nuevoEstudiante;
         }
-    estudiante.materiasCursando += 1;
+        estudiante.materiasCursando += 1;
     }
 }

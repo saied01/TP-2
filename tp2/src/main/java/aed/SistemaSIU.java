@@ -18,11 +18,10 @@ public class SistemaSIU {
         PROF
     }
 
-    //O( sumaDe{c∈C}(|c| ∗ |Mc|)+ sumaDe{m∈M}(sumaDe{n∈Nm}(|n|)) + E )
     public SistemaSIU(InfoMateria[] materiasEnCarreras, String[] libretasUniversitarias){
         /*
-        materiasEnCarreras\ (listaDeCarreras...) (nombreDeMismaMateria)
-         */
+        O(∑{c∈C} |c| * |M_c| + ∑{m∈M} ∑_{n∈N_m} |n| + E)
+        */
 
         this.trieCarreras = new TrieCarreras();
         this.trieEstudiantes = new TrieEstudiantes();
@@ -37,7 +36,7 @@ public class SistemaSIU {
 
 
         // es donde se crean los tries de carreras y materias
-        for (int i = 0; i < materiasEnCarreras.length; i++) { // O(sumaDe{c∈C}(|c| ∗ |Mc|)+ sumaDe{m∈M}(sumaDe{n∈Nm}(|n|))
+        for (int i = 0; i < materiasEnCarreras.length; i++) {  //O(∑{c∈C} |c| * |M_c| + ∑{m∈M} ∑_{n∈N_m} |n|)
             Materia materia = insertararCarrera(infoMaterias[i]);
             materias.add(materia);
         }
@@ -45,55 +44,56 @@ public class SistemaSIU {
 
     private Materia insertararCarrera(InfoMateria infoM) { //esta mal escrito
         /*
-        Ejemplo de imput
+        O(∑{(c, n)∈C} |c| + |n|)
+        para cada par Carrera-Materia ∈ infoM cuesta el largo de sus letras sumadas
+
+        - Modularizamos operaciones dentro de SistemaSIU para tener mas claridad a la hora de leer el codigo
+        - Esta funcion recibe una tupla de la lista de los pares carrera-materias y crea los arboles
+            para las carreras y materias de cada carrera respectivamente.
+
+        Ejemplo de entrada
         infoM = (["Computación", "Datos"], ["Algoritmos", "Algoritmos2"])
-        carrera = "Computacion"
-        materia = "Algoritmos"
          */
-        Materia instanceDeMateria = null; //instancia de la clase Materia que se comparte entre arboles (aliasing)
+        Materia instanceDeMateria = null; //instancia de clase Materia que se comparte entre tries distintos (aliasing)
         
         for (int i = 0; i < infoM.longitud(); i++) {
-            String carrera = infoM.obtenerCarrera(i);
-            String materia = infoM.obtenerNombresMateria(i);
+            String carrera = infoM.obtenerCarrera(i); //carrera = "Computacion"
+            String materia = infoM.obtenerNombresMateria(i); // materia = "Algoritmos"
 
-            TrieMaterias TrieMateriaDeCarrera = trieCarreras.insertarEnTrie(carrera); //arma y devuelve el nodo final
-                                                                                    // del arbol de Carrera
-            NodoMateria ultimoNodoMateria = TrieMateriaDeCarrera.insertarEnTrie(materia); //arma y devuelve el nodo final
-                                                                            // del arbol de Materia
+            TrieMaterias TrieMateriaDeCarrera = trieCarreras.insertarEnTrie(carrera); // O(|c|)
+            NodoMateria ultimoNodoMateria = TrieMateriaDeCarrera.insertarEnTrie(materia); // O(|M_c|)
 
-            if(instanceDeMateria == null){ // si no esta agrego el pointer a la nueva isntancia de Materia
+            if(instanceDeMateria == null){
+                //si no existe la instancia de Materia la creo, aprovechando el aliasing
                 instanceDeMateria = new Materia();
 
             }
-            ultimoNodoMateria.materia = instanceDeMateria;
+            ultimoNodoMateria.materia = instanceDeMateria; // O(1)
 
-            ultimoNodoMateria.materia.tailsDeSusCarreras.add(ultimoNodoMateria);
-
-            String[] tuplaCarreraMateria = new String[] {carrera, materia};
-
-            instanceDeMateria.carrerasALasQuePertenece.add(tuplaCarreraMateria);
-
+            ultimoNodoMateria.materia.tailsDeSusCarreras.insertar(ultimoNodoMateria); // O(1)
         }
 
         return instanceDeMateria;
     }
 
-    //O(|c| + |m|)
     public void inscribir(String estudiante, String carrera, String materia){
+        /*
+         O(|c| + |m|)
+         */
         Estudiante estudianteObtenido = ObtenerEstudianteOCrearlo(estudiante); // O(1)
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
         Materia instanciaDeMateria = tailMateria.materia; // O(1)
 
         instanciaDeMateria.inscriptos += 1;
-        instanciaDeMateria.estudiantes.insertarEstudiante(estudianteObtenido);
-        /*TENGO LA DUDA SI INSERTAR ESTUDIANTE EXCEDE LA COMPLEJIDAD
-        Que otra forma de encontrar al estudiante hay que no implica mas de O(1)?*/
+        instanciaDeMateria.estudiantes.insertarEstudiante(estudianteObtenido); // O(1)
     }
 
-    // O(1) (duda: como peor caso es O(10) si no me equivoco, sigue contando como acotado O(1)?
     public Estudiante ObtenerEstudianteOCrearlo(String estudiante){
-        NodoEstudianteTrie est = trieEstudiantes.buscarEstudiante(estudiante);
+        /*
+        O(|LU|) == O(1)
+         */
+        NodoEstudianteTrie est = trieEstudiantes.buscarEstudiante(estudiante); // O(1)
         if (est == null) {
             est = trieEstudiantes.insertarEstudiante(estudiante);
             return est.estudiante;
@@ -101,19 +101,25 @@ public class SistemaSIU {
         return est.estudiante;
     }
 
-    //O(|c| + |m|)
+
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
+        /*
+         O(|c| + |m|)
+         */
+
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
         Materia instanciaDeMateria = tailMateria.materia; // O(1)
-
-        instanciaDeMateria.agregarCargoDocente(cargo.toString()); // O(4)
+        instanciaDeMateria.agregarCargoDocente(cargo.toString()); // O(1)
 
 
     }
 
-    //O(|c| + |m|)
+
     public int[] plantelDocente(String materia, String carrera){
+        /*
+         O(|c| + |m|)
+         */
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
         Materia instanciaDeMateria = tailMateria.materia; // O(1)
@@ -123,25 +129,33 @@ public class SistemaSIU {
 
 
     public void cerrarMateria(String materia, String carrera){
+        /*
+          O(|c| + ∑_{n∈N_m} |n| + E_m)
+         */
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia);// O(|m|)
         TrieMaterias trie = tailCarrera.trieMaterias;
         TrieMaterias x = tailCarrera.trieMaterias;
 
-        Materia instanciaDeMateria = tailMateria.materia; // O(1)
-        for(NodoMateria tail: instanciaDeMateria.tailsDeSusCarreras){ // O(|m| * Cantidad de Nombres)
-            tail.esFinalPalabra = false;
-            tail.materia = null;
-            trie.borrarMateria(tail);
+        ListaEnlazadaPointersDeMaterias.Nodo instanciaDeMateria = tailMateria.materia.tailsDeSusCarreras.raiz; // O(1)
+
+        instanciaDeMateria.pointerActual.materia.desincribirEstudiantes(); // O(E_m)
+
+        while(instanciaDeMateria != null){ // O(∑_{n∈N_m} |n|)
+            instanciaDeMateria.pointerActual.esFinalPalabra = false;
+            instanciaDeMateria.pointerActual.materia = null;
+            trie.borrarMateria(instanciaDeMateria.pointerActual);
+            instanciaDeMateria = instanciaDeMateria.siguiente;
         }
 
-        instanciaDeMateria.desincribirEstudiantes();
+
     }
 
 
-
-    //O(|c| + |m|)
     public int inscriptos(String materia, String carrera){
+        /*
+         O(|c| + |m|)
+         */
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
         Materia instanciaDeMateria = tailMateria.materia; // O(1)
@@ -150,41 +164,46 @@ public class SistemaSIU {
 
     //O(|c| + |m|)
     public boolean excedeCupo(String materia, String carrera){
+        /*
+         O(|c| + |m|)
+         */
 
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
         Materia instanciaDeMateria = tailMateria.materia; // O(1)
-        return instanciaDeMateria.cupo < instanciaDeMateria.inscriptos;
+        return instanciaDeMateria.cupo < instanciaDeMateria.inscriptos; // O(1)
     }
 
     public String[] carreras(){
+        /*
+         O(∑_{c∈C} |c|)
+         */
         ArrayList<String> todasLasMaterias;
         todasLasMaterias = new ArrayList<String>();
-        String[] res = trieCarreras.devolverTodasLasCarreras(raiz, "", todasLasMaterias);
-        return res;
+        return trieCarreras.devolverTodasLasCarreras(raiz, "", todasLasMaterias); //O(∑_{c∈C} |c|)
     }
 
     public String[] materias(String carrera){
+        /*
+        O(|c| + ∑_{m_c∈M_c} |m_c|)
+         */
         ArrayList<String> todasLasMaterias;
         todasLasMaterias = new ArrayList<String>();
         NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
         TrieMaterias materiasDeCarrera = tailCarrera.trieMaterias;
 
+        //O(∑_{m_c∈M_c} |m_c|)
         return materiasDeCarrera.devolverTodasLasMaterias(materiasDeCarrera.raiz, "", todasLasMaterias);
 
     }
 
 
-    public String[] ordenerLex(String[] array){
-        String[] res = new String[0];
-
-
-        return res;
-    }
-
     //O(1)
     public int materiasInscriptas(String estudiante){
-        Estudiante est = ObtenerEstudianteOCrearlo(estudiante);
-        return est.materiasCursando;
+        /*
+        O(1)
+         */
+        Estudiante est = ObtenerEstudianteOCrearlo(estudiante); // O(1)
+        return est.materiasCursando; // O(1)
     }
 }

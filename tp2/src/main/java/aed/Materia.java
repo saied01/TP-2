@@ -5,24 +5,23 @@ import java.util.ArrayList;
 public class Materia {
 
 
-    ArrayList<String[]> carrerasALasQuePertenece;
-    ArrayList<NodoMateria> tailsDeSusCarreras;
+
+    ListaEnlazadaPointersDeMaterias tailsDeSusCarreras;
     int[] cargosdocentes;
     int[] cupoPorCargo;
     int cupo;
     int inscriptos;
 
-    ListaEnlazadEstudiante estudiantes;
+    ListaEnlazadaEstudiante estudiantes;
 
 
     public Materia() {
-        this.carrerasALasQuePertenece = new ArrayList<>();
-        this.tailsDeSusCarreras = new ArrayList<>();//Para cuando sea necesario borrar la Materia
+        this.tailsDeSusCarreras = new ListaEnlazadaPointersDeMaterias();
         this.cargosdocentes = new int[]{0,0,0,0};//AY2[3],AY1[2],JTP[1],PROF[0]
         this.cupoPorCargo = new int[]{250, 100, 20,30};
         this.cupo = 0;
         this.inscriptos = 0;
-        this.estudiantes = new ListaEnlazadEstudiante();
+        this.estudiantes = new ListaEnlazadaEstudiante();
 
 
 
@@ -58,18 +57,4 @@ public class Materia {
             actual = actual.siguiente;
         }
     }
-
-    public boolean esIgual(Materia comparacion){
-        if(comparacion.carrerasALasQuePertenece.size() == carrerasALasQuePertenece.size()){
-            for(int i = 0; i < carrerasALasQuePertenece.size(); i++){
-                if(carrerasALasQuePertenece.get(i) != comparacion.carrerasALasQuePertenece.get(i)){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-
-
 }
