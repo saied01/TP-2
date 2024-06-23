@@ -6,8 +6,10 @@ import java.util.ArrayList;
 - `TrieCarreras` tiene un unico nodo raiz.
 - Para toddo nodo n, sus hijos estan conformados en un arreglo de nodos.
 - Si un nodo n no es el final de una palabra, tiene por lo menos un hijo.
-- No existen dos nodos en el trie que representen el mismo prefijo de una palabra. Osea, cada camino desde la raíz a un nodo es único.
-- Si un nodo es el final de una palabra, la palabra que componen los caracteres de los nodos, es una carrera.
+- No existen dos nodos en el trie que representen el mismo prefijo de una palabra.
+  Osea, cada camino desde la raíz a un nodo es único.
+- Si un nodo es el final de una palabra, la palabra que componen los caracteres de los nodos, es una carrera como minimo.
+
 * */
 
 public class TrieCarreras {

@@ -3,7 +3,9 @@ package aed;
 import java.util.ArrayList;
 
 /* Invariante de Representación:
-- Si `tailsDeSusCarreras` fue creado, no es `null`.
+- `tailsDeSusCarreras` cumple con el invariante de representacion de `ListaEnlazadaPointersDeMaterias`.
+- Si `tailsDeSusCarreras` siempre contiene a los 'tails' de los nombres que tiene esta materia en todas las carreras
+  en las que aparece.
 - `cargosdocentes` es un arreglo con tamaño constante 4, sus valores son mayores o iguales a 0.
 - `cupoPorCargo` es un arreglo con tamaño constante 4, sus valores son siempre los mismos (250, 100, 20, 30).
 - `cupo` es el mínimo del producto de los valores de `cargosdocentes` y `cupoPorCargo` en un indice `i` igual para ambos.

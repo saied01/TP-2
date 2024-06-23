@@ -8,6 +8,8 @@ package aed;
 - Cada nodo en la lista contiene una referencia `pointerActual` y una referencia `siguiente` al siguiente nodo en la lista, o es nulo si es el último nodo.
 - Si el `siguiente` de un nodo es null, ese nodo es el ultimo de la lista.
 - Ningun nodo tiene como `siguiente` a la raiz.
+- El ultimo elemento de la lista siempre va a tener a 'elemento'.siguiente = null.
+
 */
 
 public class ListaEnlazadaPointersDeMaterias {

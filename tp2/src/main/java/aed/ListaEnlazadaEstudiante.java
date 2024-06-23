@@ -4,6 +4,7 @@ package aed;
 - `raiz` es la referencia al primer nodo de la lista enlazada. Es `null` si y solo si la lista está vacía.
 - Cada `NodoEstudiante` en la lista enlazada contiene una referencia a un `Estudiante`.
 - No existe ningun nodo el cual su siguiente sea la raiz.
+- El ultimo elemento de la lista siempre va a tener a elemento.siguiente = null.
  */
 
 
