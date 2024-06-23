@@ -1,5 +1,12 @@
 package aed;
 
+/* Invariante de Representación:
+- `raiz` es la referencia al primer nodo de la lista enlazada. Es `null` si y solo si la lista está vacía.
+- Cada `NodoEstudiante` en la lista enlazada contiene una referencia a un `Estudiante`.
+- No existe ningun nodo el cual su siguiente sea la raiz.
+ */
+
+
 public class ListaEnlazadaEstudiante {
     NodoEstudiante raiz;
 

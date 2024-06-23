@@ -1,5 +1,12 @@
 package aed;
 
+/* Invariante de Representación:
+- `carreras` y `nombresEnCarreras` son arreglos de igual longitud.
+- El número de elementos en `carreras` y `nombresEnCarreras` es igual a la longitud del arreglo `listaPares` pasado en el constructor.
+- Cada elemento en `carreras` un correspondiente elemento en `nombresEnCarreras`, el cual contiene al menos un nombre que representa una materia de la carrera.
+- No hay valores `null` en los arreglos `carreras` y `nombresEnCarreras`.
+ */
+
 public class InfoMateria{
     String[] carreras;
     String[] nombresEnCarreras;

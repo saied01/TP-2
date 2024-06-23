@@ -1,5 +1,15 @@
 package aed;
 
+/* Invariante de Representación:
+- `raiz` es una referencia al primer nodo de la lista enlazada.
+- El nodo raiz es `null` si y solo si la lista esta vacia.
+- Si la lista esta vacia el valor de `largo` es 0.
+- El valor de `largo` es mayor o igual a 0.
+- Cada nodo en la lista contiene una referencia `pointerActual` y una referencia `siguiente` al siguiente nodo en la lista, o es nulo si es el último nodo.
+- Si el `siguiente` de un nodo es null, ese nodo es el ultimo de la lista.
+- Ningun nodo tiene como `siguiente` a la raiz.
+*/
+
 public class ListaEnlazadaPointersDeMaterias {
 
     public class Nodo{
