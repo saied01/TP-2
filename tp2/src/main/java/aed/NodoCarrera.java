@@ -5,7 +5,7 @@ package aed;
 - El hijo de un nodo es un arreglo de tamaño 256 que contiene nodos de `NodoCarrera` o valores `null`.
 - No existen dos hijos de un mismo nodo, con valores distintos de `null`, y con el mismo valor.
 - Contrariamente, si `esFinalPalabra` = false, entonces `trieMaterias` es `null`.
-- Si `esFinalPalabra` = false, entonces el nodo tiene al menos un nodo hijo con `esFinalPalabra` = true.
+- Si `esFinalPalabra` = false, entonces el nodo tiene al menos un nodo hijo con valor distinto a `null`.
 - Si `esFinalPalabra` = true, entonces `trieMaterias` referencia a un instancia de TrieMaterias.
 */
 
