@@ -2,19 +2,26 @@ package aed;
 
 import java.util.NoSuchElementException;
 
+/* Invariante de Representación:
+- `raiz` es la referencia al primer nodo de la lista enlazada. Es `null` si y solo si la lista está vacía.
+- No existe ningun nodo el cual su siguiente sea la raiz.
+- si el tamaño de la lista es mayor a cero, entonces un elemento tiene valor siguiente = null si y solo si es el ultimo elemento de la lista.
+- El tamaño de la lista es mayor o igual a cero.
+ */
+
 public class ListaEnlazada<T> {
 
-    static class NodoLisEnl<T> {
-        NodoLisEnl<T> siguiente;
+    static class NodoListaEnlazada<T> {
+        NodoListaEnlazada<T> siguiente;
         T dato;
 
-        public NodoLisEnl(T dato) {
+        public NodoListaEnlazada(T dato) {
             this.dato = dato;
             this.siguiente = null;
         }
     }
 
-    NodoLisEnl<T> raiz;
+    NodoListaEnlazada<T> raiz;
     int tamaño;
 
     public ListaEnlazada() {
@@ -23,7 +30,7 @@ public class ListaEnlazada<T> {
     }
 
     public void insertar(T dato) {
-        NodoLisEnl<T> nuevoNodoLisEnl = new NodoLisEnl<>(dato);
+        NodoListaEnlazada<T> nuevoNodoLisEnl = new NodoListaEnlazada<>(dato);
 
         if (raiz == null) {
             raiz = nuevoNodoLisEnl;
@@ -47,7 +54,7 @@ public class ListaEnlazada<T> {
 
     // Método para imprimir la lista (solo para depuración)
     public void imprimirLista() {
-        NodoLisEnl<T> actual = raiz;
+        NodoListaEnlazada<T> actual = raiz;
         while (actual != null) {
             System.out.print(actual.dato + " -> ");
             actual = actual.siguiente;

@@ -1,5 +1,15 @@
 package aed;
 
+/* Invariante de Representación:``
+- `letra` puede ser `null` o puede ser un caracter (con valor String).
+- Un nodo no tiene nodo padre si y solo si ese nodo es la raiz.
+- El hijo de un nodo es un arreglo de tamaño 256 que contiene nodos de `NodoTrie` o valores `null`.
+- No existen dos hijos de un mismo nodo, con valores distintos de `null`, y con el mismo valor.
+- Si `esFinalPalabra` = false, entonces el nodo tiene al menos un nodo hijo con valor distinto a `null`.
+- Si un nodo no tiene hijos, entonces su valor `esFinalPalabra` es true.
+- Dado un nodo, su valor `dato` es distinto de `null` si y solo si su valor `esFinalPalabra` es True.
+ */
+
 public class NodoTrie<T> {
     boolean esFinalPalabra;
     NodoTrie<T>[] hijo;
@@ -23,12 +33,12 @@ public class NodoTrie<T> {
         this.dato = dato;
     }
 
-    public boolean isEsFinalPalabra() {
+    public boolean EsFinalPalabra() {
         return esFinalPalabra;
     }
 
-    public void setEsFinalPalabra(boolean esFinalPalabra) {
-        this.esFinalPalabra = esFinalPalabra;
+    public void setEsFinalPalabra(boolean v) {
+        this.esFinalPalabra = v;
     }
 
     public NodoTrie<T>[] getHijo() {
@@ -63,17 +73,3 @@ public class NodoTrie<T> {
         this.letra = letra;
     }
 }
-
-/*
-class NodoEstudianteTrie extends Nodo<Estudiante> {
-    public NodoEstudianteTrie() {
-        super();
-    }
-}
-
-class NodoMateria extends Nodo<Materia> {
-    public NodoMateria() {
-        super();
-    }
-
- */

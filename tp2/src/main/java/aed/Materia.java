@@ -59,7 +59,7 @@ public class Materia {
     }
 
     public void desincribirEstudiantes(){
-        ListaEnlazada.NodoLisEnl<Estudiante> actual = estudiantes.raiz;
+        ListaEnlazada.NodoListaEnlazada<Estudiante> actual = estudiantes.raiz;
         while (actual != null){
             actual.dato.materiasCursando -= 1;
             actual = actual.siguiente;

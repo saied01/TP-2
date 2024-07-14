@@ -2,14 +2,20 @@ package aed;
 
 import java.util.ArrayList;
 
+/* Invariante de Representación:
+- El nodo raiz tiene valor null.
+- dado un nodo n, cumple con el invariante de representacion de la clase `NodoTrie`, y tambien sus hijos.
+- Si un nodo n no es el final de una palabra, tiene por lo menos un hijo.
+- No existen dos nodos en el trie que representen el mismo prefijo de una palabra.
+  Osea, cada camino desde la raíz a un nodo es único.
+ */
+
 public class Trie<T> {
 
     NodoTrie<T> raiz;
-    int tamañoTrie;
 
     public Trie() {
         raiz = new NodoTrie<T>();
-        tamañoTrie = 0;
     }
 
     public NodoTrie<T> insertarEnTrie(String palabra) {
@@ -69,7 +75,7 @@ public class Trie<T> {
             }
     }
 
-    public void borrarTodasLasPalabras(ListaEnlazada.NodoLisEnl<NodoTrie<T>> nodoLisEnlMateria){
+    public void borrarTodasLasPalabras(ListaEnlazada.NodoListaEnlazada<NodoTrie<T>> nodoLisEnlMateria){
         while(nodoLisEnlMateria != null){ // O(∑_{n∈N_m} |n|)
             nodoLisEnlMateria.dato.esFinalPalabra = false;
             nodoLisEnlMateria.dato.dato = null;
