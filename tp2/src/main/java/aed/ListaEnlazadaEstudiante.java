@@ -9,7 +9,7 @@ package aed;
 
 
 public class ListaEnlazadaEstudiante {
-    NodoEstudiante raiz;
+    NodoEstudianteListaEnlazada raiz;
 
     public ListaEnlazadaEstudiante() {
         this.raiz = null;
@@ -20,7 +20,7 @@ public class ListaEnlazadaEstudiante {
         Inserta al estudiante dentro de la lista enlazada de una materia
         Ademas le suma a su "materiasCursando" +1
          */
-        NodoEstudiante nuevoEstudiante = new NodoEstudiante(estudiante);
+        NodoEstudianteListaEnlazada nuevoEstudiante = new NodoEstudianteListaEnlazada(estudiante);
 
         if (raiz == null) {
             raiz = nuevoEstudiante;

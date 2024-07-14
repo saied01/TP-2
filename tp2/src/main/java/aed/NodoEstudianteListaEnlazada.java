@@ -5,12 +5,12 @@ package aed;
 - El `siguiente` de un nodo es otro nodo estudiante, o `null` si es el final de la lista.
 */
 
-public class NodoEstudiante {
+public class NodoEstudianteListaEnlazada {
     Estudiante valor;
-    NodoEstudiante siguiente;
+    NodoEstudianteListaEnlazada siguiente;
     Estudiante estudiante;
 
-    public NodoEstudiante(Estudiante estudiante) {
+    public NodoEstudianteListaEnlazada(Estudiante estudiante) {
         valor = estudiante;
         this.siguiente = null;
         this.estudiante = estudiante;

@@ -6,10 +6,10 @@ public class Nodo {
     Nodo padre;
     String letra;
 
-    public Nodo(int hijoSize) {
+    public Nodo() {
         this.letra = null;
         this.padre = null;
-        this.hijo = new Nodo[hijoSize];
+        this.hijo = new Nodo[256];
         this.esFinalPalabra = false;
     }
 }
@@ -17,8 +17,7 @@ public class Nodo {
 class NodoMateria extends Nodo {
     Materia materia;
 
-    public NodoMateria() {
-        super(256);
+    NodoMateria() {
         this.materia = null;
     }
 }
@@ -26,8 +25,7 @@ class NodoMateria extends Nodo {
 class NodoCarrera extends Nodo {
     TrieMaterias trieMaterias;
 
-    public NodoCarrera() {
-        super(256);
+    NodoCarrera() {
         this.trieMaterias = null;
     }
 }
@@ -35,8 +33,7 @@ class NodoCarrera extends Nodo {
 class NodoEstudianteTrie extends Nodo {
     Estudiante estudiante;
 
-    public NodoEstudianteTrie() {
-        super(256);
+    NodoEstudianteTrie() {
         this.estudiante = null;
     }
 }
