@@ -16,9 +16,9 @@ import java.util.Arrays;
 
 
 public class SistemaSIU {
-    TrieCarreras trieCarreras;
-    TrieEstudiantes trieEstudiantes;
-    NodoCarrera raiz;
+    Trie<Trie<Materia>> trieCarreras;
+    Trie<Estudiante> trieEstudiantes;
+    Nodo<Trie<Materia>> raiz;
     InfoMateria[] infoMaterias;
     ArrayList<Estudiante> estudiantes;
     ArrayList<Materia> materias;
@@ -35,12 +35,12 @@ public class SistemaSIU {
         O(∑{c∈C} |c| * |M_c| + ∑{m∈M} ∑_{n∈N_m} |n| + E)
         */
 
-        this.trieCarreras = new TrieCarreras();
-        this.trieEstudiantes = new TrieEstudiantes();
+        this.trieCarreras = new Trie<Trie<Materia>>();
+        this.trieEstudiantes = new Trie<Estudiante>();
         this.raiz = trieCarreras.raiz;
         this.infoMaterias = materiasEnCarreras;
         this.materias = new ArrayList<>();
-        this.estudiantes = new ArrayList<>(libretasUniversitarias.length); 
+        this.estudiantes = new ArrayList<>(libretasUniversitarias.length);
 
         for (int i = 0; i < libretasUniversitarias.length; i++){ // O(E)
             estudiantes.add(new Estudiante(libretasUniversitarias[i]));
@@ -67,22 +67,25 @@ public class SistemaSIU {
         infoM = (["Computación", "Datos"], ["Algoritmos", "Algoritmos2"])
          */
         Materia instanceDeMateria = null; //instancia de clase Materia que se comparte entre tries distintos (aliasing)
-        
+
         for (int i = 0; i < infoM.longitud(); i++) {
             String carrera = infoM.obtenerCarrera(i); //carrera = "Computacion"
             String materia = infoM.obtenerNombresMateria(i); // materia = "Algoritmos"
 
-            TrieMaterias TrieMateriaDeCarrera = trieCarreras.insertarEnTrie(carrera); // O(|c|)
-            NodoMateria ultimoNodoMateria = TrieMateriaDeCarrera.insertarEnTrie(materia); // O(|M_c|)
+            Nodo<Trie<Materia>> TrieMateriaDeCarrera = trieCarreras.insertarEnTrie(carrera); // O(|c|)
+            if (TrieMateriaDeCarrera.dato == null) {
+                TrieMateriaDeCarrera.dato = new Trie<Materia>();
+            }
+            Nodo<Materia> ultimoNodoMateria = TrieMateriaDeCarrera.dato.insertarEnTrie(materia); // O(|M_c|)
 
             if(instanceDeMateria == null){
                 //si no existe la instancia de Materia la creo, aprovechando el aliasing
                 instanceDeMateria = new Materia();
 
             }
-            ultimoNodoMateria.materia = instanceDeMateria; // O(1)
+            ultimoNodoMateria.dato = instanceDeMateria; // O(1)
 
-            ultimoNodoMateria.materia.tailsDeSusCarreras.insertar(ultimoNodoMateria); // O(1)
+            ultimoNodoMateria.dato.tailsDeSusCarreras.insertar(ultimoNodoMateria); // O(1)
         }
 
         return instanceDeMateria;
@@ -93,9 +96,9 @@ public class SistemaSIU {
          O(|c| + |m|)
          */
         Estudiante estudianteObtenido = ObtenerEstudianteOCrearlo(estudiante); // O(1)
-        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
-        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
-        Materia instanciaDeMateria = tailMateria.materia; // O(1)
+        Nodo<Trie<Materia>> tailCarrera = trieCarreras.devolverHoja(carrera); // O(|c|)
+        Nodo<Materia> tailMateria = tailCarrera.dato.devolverHoja(materia); // O(|m|)
+        Materia instanciaDeMateria = tailMateria.dato; // O(1)
 
         instanciaDeMateria.inscriptos += 1;
         instanciaDeMateria.estudiantes.insertarEstudiante(estudianteObtenido); // O(1)
@@ -105,12 +108,15 @@ public class SistemaSIU {
         /*
         O(|LU|) == O(1)
          */
-        NodoEstudianteTrie est = trieEstudiantes.buscarEstudiante(estudiante); // O(1)
+        Nodo<Estudiante> est = trieEstudiantes.devolverHoja(estudiante); // O(1)
         if (est == null) {
-            est = trieEstudiantes.insertarEstudiante(estudiante);
-            return est.estudiante;
+            est = trieEstudiantes.insertarEnTrie(estudiante);
+            est.dato = new Estudiante(estudiante);
+            est.esFinalPalabra = true;
+            est.dato.materiasCursando = 0;
+            return est.dato;
         }
-        return est.estudiante;
+        return est.dato;
     }
 
 
@@ -119,9 +125,9 @@ public class SistemaSIU {
          O(|c| + |m|)
          */
 
-        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
-        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
-        Materia instanciaDeMateria = tailMateria.materia; // O(1)
+        Nodo<Trie<Materia>> tailCarrera = trieCarreras.devolverHoja(carrera); // O(|c|)
+        Nodo<Materia> tailMateria = tailCarrera.dato.devolverHoja(materia); // O(|m|)
+        Materia instanciaDeMateria = tailMateria.dato; // O(1)
         instanciaDeMateria.agregarCargoDocente(cargo.toString()); // O(1)
 
 
@@ -132,9 +138,9 @@ public class SistemaSIU {
         /*
          O(|c| + |m|)
          */
-        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
-        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
-        Materia instanciaDeMateria = tailMateria.materia; // O(1)
+        Nodo<Trie<Materia>> tailCarrera = trieCarreras.devolverHoja(carrera); // O(|c|)
+        Nodo<Materia> tailMateria = tailCarrera.dato.devolverHoja(materia); // O(|m|)
+        Materia instanciaDeMateria = tailMateria.dato; // O(1)
 
         return  instanciaDeMateria.cargosdocentes; // O(1)
     }
@@ -144,22 +150,17 @@ public class SistemaSIU {
         /*
           O(|c| + ∑_{n∈N_m} |n| + E_m)
          */
-        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
-        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia);// O(|m|)
-        TrieMaterias trie = tailCarrera.trieMaterias;
-        TrieMaterias x = tailCarrera.trieMaterias;
+        Nodo<Trie<Materia>> tailCarrera = trieCarreras.devolverHoja(carrera); // O(|c|)
+        Nodo<Materia> tailMateria = tailCarrera.dato.devolverHoja(materia);// O(|m|)
+        Trie<Materia> trie = tailCarrera.dato;
+        Trie<Materia> x = tailCarrera.dato;
 
-        ListaEnlazadaPointersDeMaterias.Nodo instanciaDeMateria = tailMateria.materia.tailsDeSusCarreras.raiz; // O(1)
+        ListaEnlazadaPointersDeMaterias.Nodo instanciaDeMateria = tailMateria.dato.tailsDeSusCarreras.raiz; // O(1)
 
-        instanciaDeMateria.pointerActual.materia.desincribirEstudiantes(); // O(E_m)
+        instanciaDeMateria.pointerActual.dato.desincribirEstudiantes(); // O(E_m)
 
-        while(instanciaDeMateria != null){ // O(∑_{n∈N_m} |n|)
-            instanciaDeMateria.pointerActual.esFinalPalabra = false;
-            instanciaDeMateria.pointerActual.materia = null;
-            trie.borrarMateria(instanciaDeMateria.pointerActual);
-            instanciaDeMateria = instanciaDeMateria.siguiente;
-        }
 
+        trie.borrarTodasLasPalabras(instanciaDeMateria);
 
     }
 
@@ -168,9 +169,9 @@ public class SistemaSIU {
         /*
          O(|c| + |m|)
          */
-        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
-        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
-        Materia instanciaDeMateria = tailMateria.materia; // O(1)
+        Nodo<Trie<Materia>> tailCarrera = trieCarreras.devolverHoja(carrera); // O(|c|)
+        Nodo<Materia> tailMateria = tailCarrera.dato.devolverHoja(materia); // O(|m|)
+        Materia instanciaDeMateria = tailMateria.dato; // O(1)
         return instanciaDeMateria.inscriptos;
     }
 
@@ -180,9 +181,9 @@ public class SistemaSIU {
          O(|c| + |m|)
          */
 
-        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
-        NodoMateria tailMateria = tailCarrera.trieMaterias.devolverHojaMateria(materia); // O(|m|)
-        Materia instanciaDeMateria = tailMateria.materia; // O(1)
+        Nodo<Trie<Materia>> tailCarrera = trieCarreras.devolverHoja(carrera); // O(|c|)
+        Nodo<Materia> tailMateria = tailCarrera.dato.devolverHoja(materia); // O(|m|)
+        Materia instanciaDeMateria = tailMateria.dato; // O(1)
         return instanciaDeMateria.cupo < instanciaDeMateria.inscriptos; // O(1)
     }
 
@@ -192,7 +193,7 @@ public class SistemaSIU {
          */
         ArrayList<String> todasLasMaterias;
         todasLasMaterias = new ArrayList<String>();
-        return trieCarreras.devolverTodasLasCarreras(raiz, "", todasLasMaterias); //O(∑_{c∈C} |c|)
+        return trieCarreras.devolverTodasLasPalabras(raiz, "", todasLasMaterias); //O(∑_{c∈C} |c|)
     }
 
     public String[] materias(String carrera){
@@ -201,11 +202,11 @@ public class SistemaSIU {
          */
         ArrayList<String> todasLasMaterias;
         todasLasMaterias = new ArrayList<String>();
-        NodoCarrera tailCarrera = trieCarreras.devolverHojaCarrera(carrera); // O(|c|)
-        TrieMaterias materiasDeCarrera = tailCarrera.trieMaterias;
+        Nodo<Trie<Materia>> tailCarrera = trieCarreras.devolverHoja(carrera); // O(|c|)
+        Trie<Materia> materiasDeCarrera = tailCarrera.dato;
 
         //O(∑_{m_c∈M_c} |m_c|)
-        return materiasDeCarrera.devolverTodasLasMaterias(materiasDeCarrera.raiz, "", todasLasMaterias);
+        return materiasDeCarrera.devolverTodasLasPalabras(materiasDeCarrera.raiz, "", todasLasMaterias);
 
     }
 

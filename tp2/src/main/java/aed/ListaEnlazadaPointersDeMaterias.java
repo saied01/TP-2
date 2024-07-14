@@ -16,9 +16,9 @@ public class ListaEnlazadaPointersDeMaterias {
 
     public class Nodo{
         Nodo siguiente;
-        NodoMateria pointerActual;
+        aed.Nodo<Materia> pointerActual;
 
-        public Nodo(NodoMateria pointerActual){
+        public Nodo(aed.Nodo<Materia> pointerActual){
             this.siguiente =null;
             this.pointerActual = pointerActual;
 
@@ -31,7 +31,7 @@ public class ListaEnlazadaPointersDeMaterias {
         this.largo = 0;
     }
 
-    public void insertar(NodoMateria pointer) {
+    public void insertar(aed.Nodo<Materia> pointer) {
         /*
         -Inserta al pointer del nombre de esa materia para una de sus carreras
         dentro de la lista enlazada.
