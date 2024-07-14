@@ -43,7 +43,7 @@ public class TrieMaterias {
             }
 
             actual.hijo[index].padre = actual;
-            actual = actual.hijo[index];
+            actual = (NodoMateria) actual.hijo[index];
             actual.letra = String.valueOf(word.charAt(i));
         }
 
@@ -60,7 +60,7 @@ public class TrieMaterias {
             int index = word.charAt(i);// - 'a'; <- esto se bugea, resolver despues
 
             if (head.hijo[index] == null) return null;
-            head = head.hijo[index];
+            head = (NodoMateria) head.hijo[index];
         }
 
         return head;
@@ -76,13 +76,13 @@ public class TrieMaterias {
         Ejemplo: Para la materia "ALGO1", actual.letra es "O" y hijo.letra es "1"
          */
         String palabraEliminada = "";
-        NodoMateria actual = tailMateria.padre;
+        NodoMateria actual = (NodoMateria) tailMateria.padre;
         NodoMateria hijo = tailMateria;
         if(hijo.hijo == null) {
             while (actual.padre != null & actual.esFinalPalabra) {  // O(|N_m|)
                 palabraEliminada = hijo.letra + palabraEliminada;
                 hijo = actual;
-                actual = actual.padre;
+                actual = (NodoMateria) actual.padre;
             }
             actual.hijo[hijo.letra.charAt(0)] = null;
 
@@ -112,7 +112,7 @@ public class TrieMaterias {
 
         for (int i = 0; i < nodo.hijo.length; i++) {
             if (nodo.hijo[i] != null) {
-                devolverTodasLasMaterias(nodo.hijo[i], prefijo + (char) (i), resultado);
+                devolverTodasLasMaterias((NodoMateria) nodo.hijo[i], prefijo + (char) (i), resultado);
             }
         }
         return resultado.toArray(new String[0]);

@@ -42,7 +42,7 @@ public class TrieCarreras {
                 head.hijo[index] = new NodoCarrera();
             }
 
-            head = head.hijo[index];
+            head = (NodoCarrera) head.hijo[index];
             head.letra = String.valueOf(nombreCarrera.charAt(i));
         }
 
@@ -62,7 +62,7 @@ public class TrieCarreras {
             int index = word.charAt(i);// - 'a'; <- esto se bugea, resolver despues
 
             if (head.hijo[index] == null) return null;
-            head = head.hijo[index];
+            head = (NodoCarrera) head.hijo[index];
         }
 
         return head;
@@ -90,7 +90,7 @@ public class TrieCarreras {
 
         for (int i = 0; i < nodo.hijo.length; i++) {
             if (nodo.hijo[i] != null) {
-                devolverTodasLasCarreras(nodo.hijo[i], prefijo + (char) (i), resultado);
+                devolverTodasLasCarreras((NodoCarrera) nodo.hijo[i], prefijo + (char) (i), resultado);
             }
         }
         return resultado.toArray(new String[0]);

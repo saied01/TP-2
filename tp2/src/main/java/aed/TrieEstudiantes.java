@@ -32,7 +32,7 @@ public class TrieEstudiantes {
                 actual.hijo[indice] = new NodoEstudianteTrie();
             }
             actual.hijo[indice].padre = actual;
-            actual = actual.hijo[indice];
+            actual = (NodoEstudianteTrie) actual.hijo[indice];
             actual.letra = String.valueOf(LU.charAt(i));
         }
         actual.estudiante = new Estudiante(LU);
@@ -51,7 +51,7 @@ public class TrieEstudiantes {
             if (actual.hijo[indice] == null) {
                 return null;
             }
-            actual = actual.hijo[indice];
+            actual = (NodoEstudianteTrie) actual.hijo[indice];
         }
         return actual;
     }
