@@ -1,24 +1,24 @@
 package aed;
 
-public class Nodo<T> {
+public class NodoTrie<T> {
     boolean esFinalPalabra;
-    Nodo<T>[] hijo;
-    Nodo<T> padre;
+    NodoTrie<T>[] hijo;
+    NodoTrie<T> padre;
     T dato;
     String letra;
 
-    public Nodo() {
+    public NodoTrie() {
         this.letra = null;
         this.padre = null;
-        this.hijo = (Nodo<T>[]) new Nodo[256];
+        this.hijo = (NodoTrie<T>[]) new NodoTrie[256];
         this.esFinalPalabra = false;
         this.dato = null;
     }
 
-    public Nodo(String letra, Nodo<T> padre, T dato) {
+    public NodoTrie(String letra, NodoTrie<T> padre, T dato) {
         this.letra = letra;
         this.padre = padre;
-        this.hijo = (Nodo<T>[]) new Nodo[256];
+        this.hijo = (NodoTrie<T>[]) new NodoTrie[256];
         this.esFinalPalabra = false;
         this.dato = dato;
     }
@@ -31,19 +31,19 @@ public class Nodo<T> {
         this.esFinalPalabra = esFinalPalabra;
     }
 
-    public Nodo<T>[] getHijo() {
+    public NodoTrie<T>[] getHijo() {
         return hijo;
     }
 
-    public void setHijo(Nodo<T>[] hijo) {
+    public void setHijo(NodoTrie<T>[] hijo) {
         this.hijo = hijo;
     }
 
-    public Nodo<T> getPadre() {
+    public NodoTrie<T> getPadre() {
         return padre;
     }
 
-    public void setPadre(Nodo<T> padre) {
+    public void setPadre(NodoTrie<T> padre) {
         this.padre = padre;
     }
 

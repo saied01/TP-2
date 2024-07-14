@@ -4,22 +4,22 @@ import java.util.ArrayList;
 
 public class Trie<T> {
 
-    Nodo<T> raiz;
+    NodoTrie<T> raiz;
     int tamañoTrie;
 
     public Trie() {
-        raiz = new Nodo<T>();
+        raiz = new NodoTrie<T>();
         tamañoTrie = 0;
     }
 
-    public Nodo<T> insertarEnTrie(String palabra) {
+    public NodoTrie<T> insertarEnTrie(String palabra) {
         int n = palabra.length();
-        Nodo<T> actual = raiz;
+        NodoTrie<T> actual = raiz;
 
         for (int i = 0; i < n; i++) {
             int index = palabra.charAt(i); // Usamos el valor ASCII del carácter
             if (actual.hijo[index] == null) {
-                actual.hijo[index] = new Nodo<>();
+                actual.hijo[index] = new NodoTrie<>();
             }
             actual = actual.hijo[index];
             actual.letra = String.valueOf(palabra.charAt(i));
@@ -29,9 +29,9 @@ public class Trie<T> {
         return actual;
     }
 
-    public Nodo<T> devolverHoja(String palabra) {
+    public NodoTrie<T> devolverHoja(String palabra) {
         int n = palabra.length();
-        Nodo<T> actual = raiz;
+        NodoTrie<T> actual = raiz;
 
         for (int i = 0; i < n; i++) {
             int index = palabra.charAt(i); // Usamos el valor ASCII del carácter
@@ -44,7 +44,7 @@ public class Trie<T> {
         return actual;
     }
 
-    public void borrarPalabra(Nodo<T> nodo) {
+    public void borrarPalabra(NodoTrie<T> nodoTrie) {
         /*
         O(|N_m|)
         recorre del final al principio letra por letra hasta
@@ -54,8 +54,8 @@ public class Trie<T> {
         Ejemplo: Para la materia "ALGO1", actual.letra es "O" y hijo.letra es "1"
          */
             String palabraEliminada = "";
-            Nodo<T> actual = nodo.padre;
-            Nodo<T> hijo = nodo;
+            NodoTrie<T> actual = nodoTrie.padre;
+            NodoTrie<T> hijo = nodoTrie;
             if(hijo.hijo == null) {
                 while (actual.padre != null & actual.esFinalPalabra) {  // O(|N_m|)
                     palabraEliminada = hijo.letra + palabraEliminada;
@@ -69,27 +69,27 @@ public class Trie<T> {
             }
     }
 
-    public void borrarTodasLasPalabras(ListaEnlazadaPointersDeMaterias.Nodo materia){
-        while(materia != null){ // O(∑_{n∈N_m} |n|)
-            materia.pointerActual.esFinalPalabra = false;
-            materia.pointerActual.dato = null;
-            borrarPalabra((Nodo<T>) materia.pointerActual);
-            materia = materia.siguiente;
+    public void borrarTodasLasPalabras(ListaEnlazada.NodoLisEnl<NodoTrie<T>> nodoLisEnlMateria){
+        while(nodoLisEnlMateria != null){ // O(∑_{n∈N_m} |n|)
+            nodoLisEnlMateria.dato.esFinalPalabra = false;
+            nodoLisEnlMateria.dato.dato = null;
+            borrarPalabra((NodoTrie<T>) nodoLisEnlMateria.dato);
+            nodoLisEnlMateria = nodoLisEnlMateria.siguiente;
         }
     }
 
-    public String[] devolverTodasLasPalabras(Nodo<T> nodo, String prefijo, ArrayList<String> resultado) {
-        if (nodo == null) {
+    public String[] devolverTodasLasPalabras(NodoTrie<T> nodoTrie, String prefijo, ArrayList<String> resultado) {
+        if (nodoTrie == null) {
             return resultado.toArray(new String[0]);
         }
 
-        if (nodo.esFinalPalabra) {
+        if (nodoTrie.esFinalPalabra) {
             resultado.add(prefijo);
         }
 
-        for (int i = 0; i < nodo.hijo.length; i++) {
-            if (nodo.hijo[i] != null) {
-                devolverTodasLasPalabras(nodo.hijo[i], prefijo + (char) i, resultado);
+        for (int i = 0; i < nodoTrie.hijo.length; i++) {
+            if (nodoTrie.hijo[i] != null) {
+                devolverTodasLasPalabras(nodoTrie.hijo[i], prefijo + (char) i, resultado);
             }
         }
         return resultado.toArray(new String[0]);

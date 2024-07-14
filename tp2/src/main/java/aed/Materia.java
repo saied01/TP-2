@@ -1,7 +1,5 @@
 package aed;
 
-import java.util.ArrayList;
-
 /* Invariante de Representación:
 - `tailsDeSusCarreras` cumple con el invariante de representacion de `ListaEnlazadaPointersDeMaterias`.
 - Si `tailsDeSusCarreras` siempre contiene a los 'tails' de los nombres que tiene esta materia en todas las carreras
@@ -16,7 +14,7 @@ public class Materia {
 
 
 
-    ListaEnlazadaPointersDeMaterias tailsDeSusCarreras;
+    ListaEnlazada<NodoTrie<Materia>> tailsDeSusCarreras;
     int[] cargosdocentes;
     int[] cupoPorCargo;
     int cupo;
@@ -26,7 +24,7 @@ public class Materia {
 
 
     public Materia() {
-        this.tailsDeSusCarreras = new ListaEnlazadaPointersDeMaterias();
+        this.tailsDeSusCarreras = new ListaEnlazada<NodoTrie<Materia>>();
         this.cargosdocentes = new int[]{0,0,0,0};//AY2[3],AY1[2],JTP[1],PROF[0]
         this.cupoPorCargo = new int[]{250, 100, 20,30};
         this.cupo = 0;
