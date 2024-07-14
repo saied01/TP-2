@@ -1,5 +1,7 @@
 package aed;
 
+import java.util.ArrayList;
+
 /* Invariante de Representación:
 - `tailsDeSusCarreras` cumple con el invariante de representacion de `ListaEnlazadaPointersDeMaterias`.
 - Si `tailsDeSusCarreras` siempre contiene a los 'tails' de los nombres que tiene esta materia en todas las carreras
@@ -59,7 +61,7 @@ public class Materia {
     }
 
     public void desincribirEstudiantes(){
-        NodoEstudianteListaEnlazada actual = estudiantes.raiz;
+        NodoEstudiante actual = estudiantes.raiz;
         while (actual != null){
             actual.estudiante.materiasCursando -= 1;
             actual = actual.siguiente;

@@ -5,11 +5,13 @@ package aed;
 - El valor del `padre` del nodo es `null` si y solo si el nodo es la raiz.
 - `hijo` es un arreglo de `NodoMateria` de longitud 256,
    donde cada elemento puede ser `null` o una referencia a un nodo hijo.
-- `materia` es una referencia a un objeto `Materia` si el nodo representa el final de una palabra completa,
-   de lo contrario, es nulo.
 - Si `esFinalPalabra` = true:
     --`materia` no debe ser nulo y
+    -- `materia` es una referencia a un objeto `Materia`
     -- este mismo NodoMateria se encuentra dentro de la lista materia.tailsDeSusCarreras .
+- Si `esFinalPalabra` = false:
+    -- entonces el nodo tiene al menos un nodo hijo con valor distinto a `null`.
+    -- `materia` es `null`.
 
 */
 
