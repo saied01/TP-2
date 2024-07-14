@@ -22,7 +22,7 @@ public class Materia {
     int cupo;
     int inscriptos;
 
-    ListaEnlazadaEstudiante estudiantes;
+    ListaEnlazada<Estudiante> estudiantes;
 
 
     public Materia() {
@@ -31,7 +31,7 @@ public class Materia {
         this.cupoPorCargo = new int[]{250, 100, 20,30};
         this.cupo = 0;
         this.inscriptos = 0;
-        this.estudiantes = new ListaEnlazadaEstudiante();
+        this.estudiantes = new ListaEnlazada<Estudiante>();
 
 
 
@@ -61,9 +61,9 @@ public class Materia {
     }
 
     public void desincribirEstudiantes(){
-        NodoEstudiante actual = estudiantes.raiz;
+        ListaEnlazada.NodoLisEnl<Estudiante> actual = estudiantes.raiz;
         while (actual != null){
-            actual.estudiante.materiasCursando -= 1;
+            actual.dato.materiasCursando -= 1;
             actual = actual.siguiente;
         }
     }

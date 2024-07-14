@@ -101,7 +101,8 @@ public class SistemaSIU {
         Materia instanciaDeMateria = tailMateria.dato; // O(1)
 
         instanciaDeMateria.inscriptos += 1;
-        instanciaDeMateria.estudiantes.insertarEstudiante(estudianteObtenido); // O(1)
+        instanciaDeMateria.estudiantes.insertar(estudianteObtenido); // O(1)
+        estudianteObtenido.materiasCursando += 1;
     }
 
     public Estudiante ObtenerEstudianteOCrearlo(String estudiante){

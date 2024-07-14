@@ -69,7 +69,6 @@ public class Trie<T> {
             }
     }
 
-    //todo reveritir Trie<T>
     public void borrarTodasLasPalabras(ListaEnlazadaPointersDeMaterias.Nodo materia){
         while(materia != null){ // O(∑_{n∈N_m} |n|)
             materia.pointerActual.esFinalPalabra = false;
